@@ -39,6 +39,8 @@ dependencies {
 
     // 재생
     implementation("com.google.android.exoplayer:exoplayer:2.19.1")
+    implementation("androidx.media3:media3-exoplayer:1.3.1")
+    implementation("androidx.media3:media3-ui:1.3.1")
 
     // 알림/미디어 세션
     implementation("androidx.media:media:1.7.0")

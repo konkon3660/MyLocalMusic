@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.mylocalmusic.MainActivity;
 import com.example.mylocalmusic.R;
+import com.example.mylocalmusic.data.MusicPlayerManager;
 import com.example.mylocalmusic.databinding.FragmentLibraryBinding;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -55,9 +56,13 @@ public class LibraryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         adapter = new SongsAdapter(new ArrayList<>(), song -> {
-            // TODO: 선택한 곡 정보를 공유 ViewModel/Singleton 등에 저장해 추후 재생에 사용
-            // 지금은 화면 전환만
+            // ExoPlayer 재생
+            MusicPlayerManager playerManager = MusicPlayerManager.getInstance(requireContext());
+            playerManager.play(requireContext(), song.contentUri, song.title);
+
+            // 미니플레이어 갱신
             if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).updateMiniPlayer();
                 ((MainActivity) getActivity()).findViewById(R.id.mini_player).callOnClick();
             }
         });

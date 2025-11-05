@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.mylocalmusic.data.MusicPlayerManager;
 import com.example.mylocalmusic.databinding.ActivityMainBinding;
 import com.example.mylocalmusic.ui.library.LibraryFragment;
 import com.example.mylocalmusic.ui.player.PlayerFragment;
@@ -27,7 +28,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // 1. 뷰 바인딩 설정
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        binding.miniPlayPause.setOnClickListener(v -> {
+            MusicPlayerManager pm = MusicPlayerManager.getInstance(this);
+            if (pm.isPlaying()) pm.pause();
+            else pm.play(this, null, pm.getCurrentTitle()); // resume
+            updateMiniPlayer();
+        });
         setContentView(binding.getRoot());
 
         // 2. 초기 프래그먼트 설정
@@ -59,5 +65,13 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+    public void updateMiniPlayer() {
+        MusicPlayerManager pm = MusicPlayerManager.getInstance(this);
+        binding.miniTitle.setText(pm.getCurrentTitle().isEmpty()
+                ? "재생 중인 곡 없음" : pm.getCurrentTitle());
+        binding.miniPlayPause.setImageResource(
+                pm.isPlaying() ? android.R.drawable.ic_media_pause
+                        : android.R.drawable.ic_media_play);
     }
 }
