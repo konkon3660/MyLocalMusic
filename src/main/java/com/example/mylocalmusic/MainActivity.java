@@ -27,6 +27,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+
+        setContentView(binding.getRoot());
+
         // 1. 뷰 바인딩 설정
         binding.miniPlayPause.setOnClickListener(v -> {
             MusicPlayerManager pm = MusicPlayerManager.getInstance(this);
@@ -34,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
             else pm.play(this, null, pm.getCurrentTitle()); // resume
             updateMiniPlayer();
         });
-        setContentView(binding.getRoot());
+
 
         // 2. 초기 프래그먼트 설정
         getSupportFragmentManager().beginTransaction()
